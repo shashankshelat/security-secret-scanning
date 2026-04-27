@@ -1,0 +1,19 @@
+name: TruffleHog Single Repo Scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan-single-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run TruffleHog against one repo
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: >
+            github
+            --repo=https://github.com/sshelat/REPO_NAME
+            --token=${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }}
+            --results=verified
+            --json
