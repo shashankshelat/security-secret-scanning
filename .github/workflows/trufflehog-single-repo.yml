@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Clone target repo
         run: |
-          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }}@github.com/sshelat/Crazy_parser.git target-repo
+          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }}@github.com/shashankshelat/Crazy_parser.git target-repo
 
       - name: Run TruffleHog on cloned repo
         run: |
@@ -21,10 +21,7 @@ jobs:
             --results=verified,unknown \
             --json > trufflehog-results.json
 
-          echo "Result file size:"
           wc -c trufflehog-results.json
-
-          echo "Preview:"
           head -n 20 trufflehog-results.json || true
         continue-on-error: true
 
