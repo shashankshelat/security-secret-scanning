@@ -8,15 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run TruffleHog against target GitHub repo
+      - name: Clone target repo
+        run: |
+          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }}@github.com/sshelat/Crazy_parser.git target-repo
+
+      - name: Run TruffleHog on cloned repo
         run: |
           docker run --rm \
+            -v "$PWD/target-repo:/repo" \
             ghcr.io/trufflesecurity/trufflehog:latest \
-            github \
-            --repo=https://github.com/sshelat/Crazy_parser \
-            --token=${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }} \
-            --results=verified,unknown  \
+            git file:///repo \
+            --results=verified,unknown \
             --json > trufflehog-results.json
+
+          echo "Result file size:"
+          wc -c trufflehog-results.json
+
+          echo "Preview:"
+          head -n 20 trufflehog-results.json || true
         continue-on-error: true
 
       - name: Upload TruffleHog results
