@@ -13,7 +13,7 @@ jobs:
         with:
           extra_args: >
             github
-            --repo=https://github.com/sshelat/REPO_NAME
+            --repo=https://github.com/sshelat/Crazy_parser
             --token=${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }}
             --results=verified
             --json
