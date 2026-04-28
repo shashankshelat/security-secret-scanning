@@ -1,27 +1,27 @@
-name: TruffleHog All Repos Scan
+name: TruffleHog Single Repo Scan
 
 on:
   workflow_dispatch:
 
 jobs:
-  scan-all-repos:
+  scan-single-repo:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run TruffleHog against all shashankshelat repos
+      - name: Clone target repo
+        run: |
+          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN_EAR }}@meetearnest/data-protection-proxy.git target-repo
+
+      - name: Run TruffleHog on cloned repo
         run: |
           docker run --rm \
+            -v "$PWD/target-repo:/repo" \
             ghcr.io/trufflesecurity/trufflehog:latest \
-            github \
-            --org=shashankshelat \
-            --token=${{ secrets.TRUFFLEHOG_GITHUB_TOKEN }} \
+            git file:///repo \
             --results=verified,unknown \
             --json > trufflehog-results.json
 
-          echo "Result file size:"
           wc -c trufflehog-results.json
-
-          echo "Preview:"
           head -n 20 trufflehog-results.json || true
         continue-on-error: true
 
