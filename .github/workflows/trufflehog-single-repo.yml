@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Clone target repo
         run: |
-          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN_EAR }}@meetearnest/data-protection-proxy.git target-repo
+          git clone https://x-access-token:${{ secrets.TRUFFLEHOG_GITHUB_TOKEN_EAR }}@github.com/meetearnest/data-protection-proxy.git target-repo
 
       - name: Run TruffleHog on cloned repo
         run: |
